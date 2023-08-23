@@ -13,6 +13,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return "olá";
-});
+/**
+ * get
+ *post
+ *put
+ *delete
+ *patch
+ *options
+ */
+
+
+Route::get('/', [\App\Http\Controllers\PrincipalController::class, 'principal']);
+
+Route::get('/sobrenos', [\App\Http\Controllers\SobreNosController::class, 'sobrenos']);
+
+Route::get('/contato', [\App\Http\Controllers\ContatoController::class, 'contato']);
+
+Route::get('/login', function() { return 'login'; });
+Route::get('/clientes', function() { return 'clientes'; });
+Route::get('/fornecedores', function() { return 'fornecedores'; });
+Route::get('/produtos', function() { return 'produtos'; });
+
+
