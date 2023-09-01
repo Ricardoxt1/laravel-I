@@ -25,7 +25,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('filial_id');
             $table->unsignedBigInteger('produto_id');
-            $table->float('preco_venda', 8, 2);
+            $table->decimal('preco_venda', 8, 2);
             $table->integer('estoque_minimo');
             $table->integer('estoque_maximo');
             $table->timestamps();
@@ -52,9 +52,10 @@ return new class extends Migration
     {
         // criando as colunas da tabela de produtos
         Schema::table('produtos', function (Blueprint $table){
-            $table->float('preco_venda', 8, 2);
-            $table->integer('estoque_minimo', 8, 2);
-            $table->integer('estoque_maximo', 8, 2);
+            $table->decimal('preco_venda', 8, 2);
+            $table->integer('estoque_minimo');
+            $table->integer('estoque_maximo');
+            ;
         });
 
         // removendo a tabela de produtos_filiais e suas foreign keys
