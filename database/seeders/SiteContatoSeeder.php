@@ -24,6 +24,6 @@ class SiteContatoSeeder extends Seeder
         //     'motivo_contato' => '1',
         //     'mensagem' => 'lorem ipsum dolor sit amet, consectetur adipis cillum et just euismod',
         // ]);
-        \App\Models\SiteContato::factory()->count(100)->create();
+        // \App\Models\SiteContato::factory()->count(100)->create();
     }
 }
