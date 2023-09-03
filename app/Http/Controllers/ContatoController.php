@@ -22,7 +22,7 @@ class ContatoController extends Controller
         // $contato->email = $request->input('email');
         // $contato->motivo_contato = $request->input('motivo_contato');
         // $contato->mensagem = $request->input('mensagem');
-      
+
 
         // print_r($contato->getAttributes());
         // $contato->save();
@@ -32,14 +32,30 @@ class ContatoController extends Controller
 
     public function salvar(Request $request)
     {
-        // realizar validação dos dados da request
-        $request->validate([
-            'nome' => 'required|min:3|max:40', // lidando com min e máximo de caracteres
+        $regras = [
+            'nome' => 'required|min:3|max:40|unique:site_contatos', // lidando com min e máximo de caracteres
             'telefone' => 'required',
-            'email' => 'required',
-            'motivo_contato' => 'required',
+            'email' => 'email',
+            'motivo_contatos_id' => 'required',
             'mensagem' => 'required|max:2000'
-        ]);
-        // SiteContato::create($request->all());
+        ];
+
+        $feedback = [
+            'nome.required' => 'O nome é obrigatório',
+            'nome.min' => 'O nome deve ter no mínimo 3 caracteres',
+            'nome.max' => 'O nome deve ter no máximo 40 caracteres',
+            'nome.unique' => 'Este nome já existe',
+            'telefone.required' => 'O telefone é obrigatório',
+            'email.email' => 'O email informado é inválido',
+            'motivo_contatos_id.required' => 'O motivo do contato é obrigatório',
+            'mensagem.required' => 'A mensagem é obrigatória',
+            'mensagem.max' => 'A mensagem deve ter no máximo 2000 caracteres'
+        ];
+
+        // realizar validação dos dados da request
+        $request->validate($regras, $feedback);
+        
+        SiteContato::create($request->all());
+        return redirect()->route('site.index');
     }
 }
