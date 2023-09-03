@@ -54,7 +54,7 @@ class ContatoController extends Controller
 
         // realizar validação dos dados da request
         $request->validate($regras, $feedback);
-        
+
         SiteContato::create($request->all());
         return redirect()->route('site.index');
     }

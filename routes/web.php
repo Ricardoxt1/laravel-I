@@ -12,10 +12,19 @@ use Illuminate\Support\Facades\Route;
  */
 
 
-Route::get('/', [\App\Http\Controllers\PrincipalController::class, 'principal'])->name('site.index');
-Route::get('/sobrenos', [\App\Http\Controllers\SobreNosController::class, 'sobrenos'])->name('site.sobrenos');
-Route::get('/contato', [\App\Http\Controllers\ContatoController::class, 'contato'])->name('site.contato');
-Route::post('/contato', [\App\Http\Controllers\ContatoController::class, 'salvar'])->name('site.contato');
+Route::get('/', [\App\Http\Controllers\PrincipalController::class, 'principal'])
+    ->name('site.index')
+    ->middleware('log.acesso');
+
+Route::get('/sobrenos', [\App\Http\Controllers\SobreNosController::class, 'sobrenos'])
+    ->name('site.sobrenos');
+
+Route::get('/contato', [\App\Http\Controllers\ContatoController::class, 'contato'])
+    ->name('site.contato');
+
+Route::post('/contato', [\App\Http\Controllers\ContatoController::class, 'salvar'])
+    ->name('site.contato');
+
 Route::get('/login', function () {
     return 'login';
 })->name('site.login');
@@ -24,7 +33,7 @@ Route::get('/login', function () {
  * possivel fazer o agrupamento de rotas utilizando GROUP
  * renomeando as rotas utilizando name
  */
-Route::prefix('/app')->group(function () {
+Route::middleware('autenticacao:ldap,visitante')->prefix('/app')->group(function () {
 
     Route::get('/clientes', function () {
         return 'clientes';
