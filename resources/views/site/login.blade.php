@@ -12,18 +12,19 @@
                 @csrf
                 <div style="width: 30%; margin-left: auto; margin-right: auto;">
                     <div class="campo">
-                        <input type="text" value="{{ old('usuario') }}" name="usuario" id="usuario" placeholder="Usuário" class="borda-preta">
-                        {{ $errors->has('usuario') ? $errors->first('usuario') : ''}}
+                        <input type="text" value="{{ old('usuario') }}" name="usuario" id="usuario" placeholder="Usuário"
+                            class="borda-preta">
+                        {{ $errors->has('usuario') ? $errors->first('usuario') : '' }}
                     </div>
                     <div class="campo">
-                        <input type="password" value="{{ old('senha') }}" name="senha" id="senha" placeholder="Digite sua senha"
-                            class="borda-preta">
-                        {{ $errors->has('senha') ? $errors->first('senha') : ''}}
+                        <input type="password" value="{{ old('senha') }}" name="senha" id="senha"
+                            placeholder="Digite sua senha" class="borda-preta">
+                        {{ $errors->has('senha') ? $errors->first('senha') : '' }}
                     </div>
                     <button type="submit" value="Entrar" class="borda-preta">Acessar</button>
                 </div>
             </form>
-
+            {{ isset($erro) && $erro != '' ? $erro : '' }}
 
         </div>
 

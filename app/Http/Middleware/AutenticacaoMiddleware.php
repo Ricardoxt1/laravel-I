@@ -16,18 +16,12 @@ class AutenticacaoMiddleware
      */
     public function handle(Request $request, Closure $next, $metodo_autenticacao, $perfil)
     {
-        if($metodo_autenticacao == 'ldap'){
-            echo 'Autenticação LDAP'. $perfil;   
-        }
-
-        if($metodo_autenticacao == 'padrao'){
-            echo 'Autenticação Padrão'. $perfil;   
-        }
-        //caso usuario ter acesso
-        if (true) {
+        session_start();
+        
+        if (isset($_SESSION['email']) && $_SESSION['email'] != '') {
             return $next($request);
         } else {
-            return Response('Precisa de autenticação'. $perfil, 401);
-        };
+            return redirect()->route('site.login', ['erro' => 2]);
+        }
     }
 }
