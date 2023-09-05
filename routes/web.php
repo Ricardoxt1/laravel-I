@@ -40,7 +40,14 @@ Route::middleware('autenticacao:ldap,visitante')->prefix('/app')->group(function
 
     Route::get('/clientes', [\App\Http\Controllers\ClienteController::class, 'index'])->name('app.cliente');
 
-    Route::get('/fornecedores',[\App\Http\Controllers\FornecedorController::class, 'index'])->name('app.fornecedore');
+    //rota para fornecedores
+    Route::get('/fornecedores',[\App\Http\Controllers\FornecedorController::class, 'index'])->name('app.fornecedor');
+    Route::post('/fornecedores/listar',[\App\Http\Controllers\FornecedorController::class, 'listar'])->name('app.fornecedor.listar');
+
+    Route::get('/fornecedores/adicionar',[\App\Http\Controllers\FornecedorController::class, 'adicionar'])->name('app.fornecedor.adicionar');
+    Route::post('/fornecedores/adicionar',[\App\Http\Controllers\FornecedorController::class, 'adicionar'])->name('app.fornecedor.adicionar');
+
+    
 
     Route::get('/produtos',[\App\Http\Controllers\ProdutoController::class, 'index'])->name('app.produto');
 });
