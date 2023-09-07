@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProdutoController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -42,14 +43,25 @@ Route::middleware('autenticacao:ldap,visitante')->prefix('/app')->group(function
 
     //rota para fornecedores
     Route::get('/fornecedores',[\App\Http\Controllers\FornecedorController::class, 'index'])->name('app.fornecedor');
+    Route::get('/fornecedores/listar',[\App\Http\Controllers\FornecedorController::class, 'listar'])->name('app.fornecedor.listar');
     Route::post('/fornecedores/listar',[\App\Http\Controllers\FornecedorController::class, 'listar'])->name('app.fornecedor.listar');
 
+    // adicionar
     Route::get('/fornecedores/adicionar',[\App\Http\Controllers\FornecedorController::class, 'adicionar'])->name('app.fornecedor.adicionar');
     Route::post('/fornecedores/adicionar',[\App\Http\Controllers\FornecedorController::class, 'adicionar'])->name('app.fornecedor.adicionar');
 
+    // editar
+    Route::get('/fornecedores/editar/{id}/{msg?}',[\App\Http\Controllers\FornecedorController::class, 'editar'])->name('app.fornecedor.editar');
+    Route::post('/fornecedores/editar/{id}',[\App\Http\Controllers\FornecedorController::class, 'editar'])->name('app.fornecedor.editar');
+
+    //deletar
+    Route::get('/fornecedores/excluir/{id}',[\App\Http\Controllers\FornecedorController::class, 'excluir'])->name('app.fornecedor.excluir');
+
+
+
     
 
-    Route::get('/produtos',[\App\Http\Controllers\ProdutoController::class, 'index'])->name('app.produto');
+    Route::resource('produto', ProdutoController::class);
 });
 
 /**

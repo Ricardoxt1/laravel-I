@@ -12,16 +12,31 @@ class FornecedorController extends Controller
         return view('app.fornecedor.index', ['titulo' => 'Super Gestão - Fornecedor']);
     }
 
-    public function listar()
+    public function listar(Request $request, Fornecedor $Fornecedor)
     {
-        return view('app.fornecedor.listar', ['titulo' => 'Super Gestão - Listagem de Fornecedores']);
+        $fornecedores = $Fornecedor::where('nome', 'like', '%' . $request->input('nome') . '%')
+            ->where('site', 'like', '%' . $request->input('site') . '%')
+            ->where('uf', 'like', '%' . $request->input('uf') . '%')
+            ->where('email', 'like', '%' . $request->input('email') . '%')
+            ->paginate(3);
+
+
+        return view(
+            'app.fornecedor.listar',
+            [
+                'titulo' => 'Super Gestão - Listagem de Fornecedores',
+                'fornecedores' => $fornecedores,
+                'request' => $request->all()
+            ]
+        );
     }
 
-    public function adicionar(Request $request)
+    public function adicionar(Request $request, Fornecedor $Fornecedor)
     {
-        $msg= '';
+        $msg = '';
 
-        if ($request->input('_token') != '') {
+        // adição
+        if ($request->input('_token') != '' && $request->input('id') == '') {
             //validação
             $regras = [
                 'nome' => 'required|min:3|max:40',
@@ -29,7 +44,7 @@ class FornecedorController extends Controller
                 'uf' => 'required|min:2|max:2',
                 'email' => 'email'
             ];
-            
+
             $feedback = [
                 'required' => 'O campo :attribute é obrigatório',
                 'nome.min' => 'O campo nome deve ter no mínimo 3 caracteres',
@@ -38,17 +53,60 @@ class FornecedorController extends Controller
                 'uf.max' => 'O campo uf deve ter no máximo 2 caracteres',
                 'email.email' => 'O campo email deve ser um email válido'
             ];
-            
+
             $request->validate($regras, $feedback);
-            
+
             // adicionar fornecedor
             $fornecedor = new Fornecedor();
-            $fornecedor->create($request->all());        
-            
+            $fornecedor->create($request->all());
+
             $msg = 'Fornecedor cadastrado com sucesso';
         }
 
+        // edição
+        if ($request->input('_token') != '' && $request->input('id') != '') {
+            $fornecedor = $Fornecedor::find($request->input('id'));
+            $update = $fornecedor->update($request->all());
 
-        return view('app.fornecedor.adicionar', ['titulo' => 'Super Gestão - Adicionar Fornecedor', 'msg' => $msg]);
+            if ($update) {
+                $msg = 'Update realizado com sucesso!';
+            } else {
+                $msg = 'Houve um problema na atualização dos dados!';
+            }
+
+            return redirect()->route(
+                'app.fornecedor.editar',
+                [
+                    'id' => $request->input('id'),
+                    'msg' => $msg,
+                    'titulo' => 'Super Gestão - Adicionar Fornecedor',
+                    'titulo_pagina' => 'Editar Fornecedor'
+                ]
+            );
+        }
+        return view('app.fornecedor.adicionar', [
+            'msg' => $msg,
+            'titulo' => 'Super Gestão - Adicionar Fornecedor',
+            'titulo_pagina' => 'Adicionar Fornecedor',
+        ]);
+    }
+
+    //método para editagem de fornecedores
+    public function editar(Fornecedor $Fornecedor, $id, $msg = '')
+    {
+        $fornecedor = $Fornecedor::find($id);
+
+        return view('app.fornecedor.adicionar', [
+            'titulo' => 'Super Gestão - Editar Fornecedor',
+            'titulo_pagina' => 'Editar Fornecedor',
+            'fornecedor' => $fornecedor,
+            'msg' => $msg
+        ]);
+    }
+
+    public function excluir($id, Fornecedor $Fornecedor){
+        $Fornecedor::find($id)->delete();
+
+        return redirect()->route('app.fornecedor');
     }
 }
