@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Unidade;
 use App\Models\Produto;
+use App\Models\Item;
+use App\Models\ProdutoDetalhe;
 use Illuminate\Http\Request;
 
 class ProdutoController extends Controller
@@ -13,10 +15,10 @@ class ProdutoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Produto $Produto, Request $request)
+    public function index(Item $Produto, Request $request)
     {
         $msg = '';
-        //
+        
         $produtos = $Produto::paginate(10);
 
         return view('app.produto.index', [
@@ -43,7 +45,7 @@ class ProdutoController extends Controller
             'titulo' => 'Super Gestão - Cadastro de Produtos',
             'titulo_pagina' => 'Cadastro de Produtos',
             'unidades' => $unidades,
-            'produtos' => $produtos,
+            
         ]);
     }
 
@@ -130,8 +132,11 @@ class ProdutoController extends Controller
      * @param  \App\Models\Produto  $produto
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Produto $produto)
+    public function destroy(Produto $Produto)
     {
         //
+        $Produto->delete();
+        return redirect()->route('produto.index');
+
     }
 }

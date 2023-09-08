@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProdutoController;
+use App\Http\Controllers\ProdutoDetalheController;
+
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -62,6 +64,8 @@ Route::middleware('autenticacao:ldap,visitante')->prefix('/app')->group(function
     
 
     Route::resource('produto', ProdutoController::class);
+
+    Route::resource('produto-detalhe', ProdutoDetalheController::class);
 });
 
 /**
