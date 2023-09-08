@@ -3,32 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Cliente;
 
-class ClienteController extends Controller
+class PedidoController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * @param App\Models\Cliente $Cliente
+     *
      * @return \Illuminate\Http\Response
      */
-    public function index(Cliente $Cliente, Request $Request)
+    public function index()
     {
         //
-        $clientes = $Cliente::paginate(10);
-        return view('app.cliente.index', ['titulo' => 'Clientes', 'titulo_pagina' => 'Listagem de Clientes', 'clientes' => $clientes, 'request' => $Request->all()]);
     }
 
     /**
      * Show the form for creating a new resource.
-     * @param App\Models\Cliente $Cliente
+     *
      * @return \Illuminate\Http\Response
      */
-    public function create(Cliente $Cliente, Request $request)
+    public function create()
     {
-        //       
-        $clientes = $Cliente::all();
-        return view('app.cliente.create', ['titulo' => 'Novo Cliente', 'titulo_pagina' => 'Cadastro de Clientes', 'clientes' => $clientes]);
+        //
     }
 
     /**
@@ -40,27 +35,6 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         //
-        $regras = [
-            'nome' => 'required|min:3|max:40',
-        ];
-
-        $feedback = [
-            'required' => 'O campo nome é obrigatório.',
-            'nome.min' => 'O campo nome deve ter no mínimo 3 caracteres.',
-            'nome.max' => 'O campo nome deve ter no máximo 40 caracteres.',
-
-        ];
-
-        $request->validate(
-            $regras,
-            $feedback
-        );
-
-        $cliente = new Cliente();
-        $cliente->nome = $request->get('nome');
-        $cliente->save();
-
-        return redirect()->route('cliente.index');
     }
 
     /**
